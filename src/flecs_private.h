@@ -344,6 +344,7 @@ int ecs_parse_signature_action(
     ecs_world_t *world,
     ecs_system_expr_elem_kind_t elem_kind,
     ecs_system_expr_oper_kind_t oper_kind,
+    ecs_system_expr_inout_kind_t inout_kind,
     const char *component_id,
     const char *source_id,
     void *data);

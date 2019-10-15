@@ -82,6 +82,7 @@ void alloc_buffer(
     ecs_map_t *map,
     uint32_t bucket_count)
 {
+    printf("alloc_buffer: bucket_count = %d\n", bucket_count);
     if (bucket_count) {
         map->buckets = ecs_os_calloc(bucket_count * sizeof(uint32_t), 1);
         ecs_assert(map->buckets != NULL, ECS_OUT_OF_MEMORY, 0);
@@ -317,7 +318,8 @@ void* _ecs_map_set(
         bucket_count = map->bucket_count;
     }
 
-    if (((float)map->count + 1) / (float)bucket_count > FLECS_LOAD_FACTOR) {
+    if ((((float)map->count + 1) / (float)bucket_count) > FLECS_LOAD_FACTOR) {
+        printf("resize map: %d\n", map->count);
         resize_map(map, bucket_count * 2);
     }
 
@@ -448,6 +450,8 @@ uint32_t ecs_map_set_size(
     ecs_map_t *map,
     uint32_t size)
 {
+    printf("map_set_size => %d\n", size);
+
     uint32_t result = ecs_vector_set_size(&map->nodes, &map->node_params, size);
     resize_map(map, size / FLECS_LOAD_FACTOR);
     return result;
@@ -458,6 +462,7 @@ uint32_t ecs_map_grow(
     uint32_t size)
 {
     if (size > ecs_vector_size(map->nodes)) {
+        printf("map_grow => %d (is %d)\n", size, ecs_vector_size(map->nodes));
         return ecs_map_set_size(map, size);
     }
 

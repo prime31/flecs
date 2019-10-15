@@ -90,6 +90,12 @@ typedef struct EcsPrefabBuilder {
     ecs_vector_t *ops; /* ecs_builder_op_t */
 } EcsPrefabBuilder;
 
+typedef enum ecs_system_expr_inout_kind_t {
+    EcsInOut,
+    EcsIn,
+    EcsOut
+} ecs_system_expr_inout_kind_t;
+
 /** Type that is used by systems to indicate where to fetch a component from */
 typedef enum ecs_system_expr_elem_kind_t {
     EcsFromSelf,            /* Get component from self (default) */
@@ -116,6 +122,7 @@ typedef int (*ecs_parse_action_t)(
     ecs_world_t *world,
     ecs_system_expr_elem_kind_t elem_kind,
     ecs_system_expr_oper_kind_t oper_kind,
+    ecs_system_expr_inout_kind_t inout_kind,
     const char *component,
     const char *source,
     void *ctx);
@@ -124,6 +131,7 @@ typedef int (*ecs_parse_action_t)(
 typedef struct ecs_system_column_t {
     ecs_system_expr_elem_kind_t kind;       /* Element kind (Entity, Component) */
     ecs_system_expr_oper_kind_t oper_kind;  /* Operator kind (AND, OR, NOT) */
+    ecs_system_expr_inout_kind_t inout_kind;     /* Is component read or written */
     union {
         ecs_type_t type;             /* Used for OR operator */
         ecs_entity_t component;      /* Used for AND operator */

@@ -33,6 +33,7 @@ void _ecs_assert(
             ecs_os_err("assert(%s) %s:%d: %s",
                 condition_str, file, line, ecs_strerror(error_code));
         }
+
         ecs_os_abort();
     }
 }

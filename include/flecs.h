@@ -192,6 +192,7 @@ typedef void (*ecs_module_init_action_t)(
 #define EEcsId (8)
 #define EEcsHidden (9)
 #define EEcsDisabled (10)
+#define EEcsOnDemand (11)
 
 /* Type handles to builtin components */
 FLECS_EXPORT
@@ -205,8 +206,8 @@ extern ecs_type_t
     TEcsColSystem,
     TEcsId,
     TEcsHidden,
-    TEcsDisabled;
-
+    TEcsDisabled,
+    TEcsOnDemand;
 
 #define ECS_INSTANCEOF ((ecs_entity_t)1 << 63)
 #define ECS_CHILDOF ((ecs_entity_t)1 << 62)
@@ -230,7 +231,8 @@ extern const char
     *ECS_ID_ID,
     *ECS_HIDDEN_ID,
     *ECS_CONTAINER_ID,
-    *ECS_DISABLED_ID;
+    *ECS_DISABLED_ID,
+    *ECS_ON_DEMAND_ID;
 
 /* -- World API -- */
 

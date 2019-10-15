@@ -262,18 +262,24 @@ static int32_t malloc_count;
 
 static
 void *test_malloc(size_t size) {
+    printf("malloc %d\n", size);
+    ut_backtrace(stdout);
     malloc_count ++;
     return malloc(size);
 }
 
 static
 void *test_calloc(size_t size, size_t n) {
+    printf("calloc %d\n", size);
+    ut_backtrace(stdout);    
     malloc_count ++;
     return calloc(size, n);
 }
 
 static
 void *test_realloc(void *old_ptr, size_t size) {
+    printf("realloc %d\n", size);
+    ut_backtrace(stdout);    
     malloc_count ++;
     return realloc(old_ptr, size);
 }
@@ -322,6 +328,8 @@ void World_dim_type() {
     ecs_dim_type(world, Position, 1000);
 
     malloc_count = 0;
+
+    printf("\n\n==============\n\n");
 
     ecs_new_w_count(world, Position, 500);
 

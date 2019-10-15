@@ -249,6 +249,7 @@ int ecs_parse_signature_action(
     ecs_world_t *world,
     ecs_system_expr_elem_kind_t elem_kind,
     ecs_system_expr_oper_kind_t oper_kind,
+    ecs_system_expr_inout_kind_t inout_kind,
     const char *component_id,
     const char *source_id,
     void *data)
@@ -281,6 +282,7 @@ int ecs_parse_signature_action(
         elem = ecs_vector_add(&system_data->columns, &system_column_params);
         elem->kind = elem_kind;
         elem->oper_kind = oper_kind;
+        elem->inout_kind = inout_kind;
         elem->is.component = component;
 
         if (elem_kind == EcsFromEntity) {

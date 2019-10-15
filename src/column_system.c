@@ -749,8 +749,7 @@ ecs_entity_t ecs_new_col_system(
 
     ecs_assert(count != 0, ECS_INVALID_PARAMETER, NULL);
 
-    ecs_entity_t result = _ecs_new(
-        world, world->t_col_system);
+    ecs_entity_t result = _ecs_new(world, world->t_col_system);
 
     EcsId *id_data = ecs_get_ptr(world, result, EcsId);
     *id_data = id;
