@@ -110,6 +110,8 @@ const char* ecs_strerror(
         return "a prefab child type must have at least one INSTANCEOF element";
     case ECS_UNSUPPORTED:
         return "operation is unsupported";
+    case ECS_NO_OUT_COLUMNS:
+        return "on demand system has no out columns";
     }
 
     return "unknown error code";

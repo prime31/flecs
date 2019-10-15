@@ -797,7 +797,7 @@ ecs_entity_t ecs_new_col_system(
     ecs_entity_t *elem = NULL;
 
     if (kind == EcsManual) {
-        elem = ecs_vector_add(&world->on_demand_systems, &handle_arr_params);
+        elem = ecs_vector_add(&world->manual_systems, &handle_arr_params);
     } else if (!ecs_vector_count(system_data->tables)) {
         elem = ecs_vector_add(&world->inactive_systems, &handle_arr_params);
     } else {

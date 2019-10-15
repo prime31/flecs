@@ -262,24 +262,18 @@ static int32_t malloc_count;
 
 static
 void *test_malloc(size_t size) {
-    printf("malloc %d\n", size);
-    ut_backtrace(stdout);
     malloc_count ++;
     return malloc(size);
 }
 
 static
 void *test_calloc(size_t size, size_t n) {
-    printf("calloc %d\n", size);
-    ut_backtrace(stdout);    
     malloc_count ++;
     return calloc(size, n);
 }
 
 static
 void *test_realloc(void *old_ptr, size_t size) {
-    printf("realloc %d\n", size);
-    ut_backtrace(stdout);    
     malloc_count ++;
     return realloc(old_ptr, size);
 }
@@ -296,13 +290,17 @@ void World_dim() {
 
     ECS_COMPONENT(world, Position);
 
+    /* Create single entity so that the table exists. This makes the allocation
+     * counts more predictable, as new_w_count won't trigger table creation */
+    ecs_new(world, Position);
+
     ecs_dim(world, 1100);
 
     malloc_count = 0;
 
     ecs_new_w_count(world, Position, 500);
 
-    test_int(malloc_count, 6);
+    test_int(malloc_count, 2);
 
     malloc_count = 0;
 
@@ -329,8 +327,6 @@ void World_dim_type() {
 
     malloc_count = 0;
 
-    printf("\n\n==============\n\n");
-
     ecs_new_w_count(world, Position, 500);
 
     test_int(malloc_count, 2);
@@ -339,7 +335,7 @@ void World_dim_type() {
 
     ecs_new_w_count(world, Position, 400);
 
-    test_int(malloc_count, 3);
+    test_int(malloc_count, 2);
 
     ecs_fini(world);
 }

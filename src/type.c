@@ -8,10 +8,6 @@ const ecs_vector_params_t type_node_params = {
     .element_size = sizeof(ecs_type_node_t)
 };
 
-const ecs_vector_params_t ptr_params = {
-    .element_size = sizeof(void*)
-};
-
 const ecs_vector_params_t link_params = {
     .element_size = sizeof(ecs_type_link_t*)
 };

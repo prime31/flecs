@@ -169,6 +169,19 @@ typedef struct ecs_matched_table_t {
     int32_t depth;                  /* Depth of table (when using CASCADE) */
 } ecs_matched_table_t;
 
+/** Keep track of how many [in] columns are active for [out] columns of OnDemand
+ * systems. */
+typedef struct ecs_on_demand_out_t {
+    ecs_entity_t system;    /* Handle to system */
+    uint32_t count;         /* Total number of times [out] columns are used */
+} ecs_on_demand_out_t;
+
+/** Keep track of which OnDemand systems are matched with which [in] columns */
+typedef struct ecs_on_demand_in_t {
+    uint32_t count;         /* Number of active systems with [in] column */
+    ecs_vector_t *systems;  /* Systems that have this column as [out] column */
+} ecs_on_demand_in_t;
+
 /** Base type for a system */
 typedef struct EcsSystem {
     ecs_system_action_t action;    /* Callback to be invoked for matching rows */
@@ -240,6 +253,9 @@ typedef struct EcsColSystem {
     ecs_vector_t *jobs;                   /* Jobs for this system */
     ecs_vector_t *tables;                 /* Vector with matched tables */
     ecs_vector_t *inactive_tables;        /* Inactive tables */
+    ecs_on_demand_out_t *on_demand;       /* Keep track of [out] column refs */
+    ecs_system_status_action_t status_action; /* Status action */
+    void *status_ctx;                     /* User data for status action */
     ecs_vector_params_t column_params;    /* Parameters for table_columns */
     ecs_vector_params_t component_params; /* Parameters for components */
     ecs_vector_params_t ref_params;       /* Parameters for refs */
@@ -367,6 +383,8 @@ typedef struct ecs_thread_t {
     uint16_t index;                           /* Index of thread */
 } ecs_thread_t;
 
+
+
 /** The world stores and manages all ECS data. An application can have more than
  * one world, but data is not shared between worlds. */
 struct ecs_world {
@@ -384,8 +402,11 @@ struct ecs_world {
     ecs_vector_t *post_update_systems; 
     ecs_vector_t *pre_store_systems; 
     ecs_vector_t *on_store_systems;   
-    ecs_vector_t *on_demand_systems;  
-    ecs_vector_t *inactive_systems;   
+    ecs_vector_t *manual_systems;  
+    ecs_vector_t *inactive_systems;
+
+    /* -- Keep track of in columns for OnDemand systems -- */
+    ecs_map_t *on_demand_components;
 
 
     /* -- Row systems -- */
@@ -485,5 +506,6 @@ extern const ecs_vector_params_t system_column_params;
 extern const ecs_vector_params_t matched_table_params;
 extern const ecs_vector_params_t matched_column_params;
 extern const ecs_vector_params_t reference_params;
+extern const ecs_vector_params_t ptr_params;
 
 #endif
