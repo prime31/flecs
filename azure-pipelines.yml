@@ -1,0 +1,52 @@
+# https://aka.ms/yaml
+
+jobs:
+- job: buildMacOS
+  pool:
+    vmImage: 'macOS-latest'
+  steps:
+    - script: |
+        echo Cloning and Building bake
+        git clone https://github.com/SanderMertens/bake
+        make -C bake/build-$(uname)
+        bake/bake setup
+      displayName: Clone Bake
+    - script: |
+        echo Baking Flecs
+        bake clone https://github.com/SanderMertens/flecs
+        pwd
+        # echo $(Agent.HomeDirectory)
+        # echo $(Agent.BuildDirectory)
+        pwd && ls -la
+        cd flecs
+        pwd && ls -la
+        cd bin/x64-Darwin-debug
+        pwd && ls -la
+      displayName: Bake Flecs
+    - task: CopyFiles@2
+      continueOnError: false
+      inputs:
+        sourceFolder: ''
+        contents: '**/*.dylib'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: drop
+
+
+# - job: buildWindows
+#   pool:
+#     vmImage: 'windows-latest'
+#   steps:
+#     - script: echo win build
+#     - script: |
+#         echo Cloning bake
+#         git clone https://github.com/SanderMertens/bake
+#         make -C bake/build-Windows
+#         bake/bake setup
+#       displayName: Clone Bake
+#     - script: |
+#         echo Baking Flecs
+#         bake clone https://github.com/SanderMertens/flecs
+#       displayName: Bake Flecs
