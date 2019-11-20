@@ -3,17 +3,24 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- master
+jobs:
+- job: buildMacOS
+  pool:
+    vmImage: 'macOS-latest'
+  steps:
+    - script: |
+        echo Cloning bake
+        git clone https://github.com/SanderMertens/bake
+        make -C bake/build-$(uname)
+        bake/bake setup
+      displayName: Clone Bake
 
-pool:
-  vmImage: 'macOS-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- job: buildWindows
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+    - script: echo win build
+    - script: |
+        echo multiline
+        echo no
