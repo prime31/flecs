@@ -28,7 +28,9 @@ jobs:
     - script: |
         echo Cloning bake
         git clone https://github.com/SanderMertens/bake
-        make -C bake/build-Windows
+        cd build-Windows
+        nmake
+        cd ..
         bake/bake setup
       displayName: Clone Bake
     - script: |
