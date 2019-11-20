@@ -17,20 +17,16 @@ jobs:
         pwd
         # echo $(Agent.HomeDirectory)
         # echo $(Agent.BuildDirectory)
-        echo Current Dir
-        ls -la
-        echo Flecs Dir
+        pwd && ls -la
         cd flecs
-        ls -la
-        cd ../../
-        pwd
-        echo ../../ Dir
-        ls -la
+        pwd && ls -la
+        cd bin/x64-Darwin-debug
+        pwd && ls -la
       displayName: Bake Flecs
     - task: CopyFiles@2
       continueOnError: false
       inputs:
-        sourceFolder: 'bin/x64-Darwin-debug'
+        sourceFolder: ''
         contents: '**/*.dylib'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
