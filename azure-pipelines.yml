@@ -15,12 +15,16 @@ jobs:
         echo Baking Flecs
         bake clone https://github.com/SanderMertens/flecs
         pwd
-        echo $(Agent.HomeDirectory)
-        echo $(Agent.BuildDirectory)
+        # echo $(Agent.HomeDirectory)
+        # echo $(Agent.BuildDirectory)
+        echo Current Dir
         ls -la
-        cd bake
+        echo Flecs Dir
+        cd flecs
         ls -la
-        cs ../flecs
+        cd ../../
+        pwd
+        echo ../../ Dir
         ls -la
       displayName: Bake Flecs
     - task: CopyFiles@2
