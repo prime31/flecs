@@ -18,11 +18,15 @@ jobs:
         echo $(Agent.HomeDirectory)
         echo $(Agent.BuildDirectory)
         ls -la
+        cd bake
+        ls -la
+        cs ../flecs
+        ls -la
       displayName: Bake Flecs
     - task: CopyFiles@2
       continueOnError: false
       inputs:
-        sourceFolder: '$(Agent.HomeDirectory)/bake/flecs/bin/x64-Darwin-debug'
+        sourceFolder: 'bin/x64-Darwin-debug'
         contents: '**/*.dylib'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
