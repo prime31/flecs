@@ -16,6 +16,8 @@ jobs:
         bake clone https://github.com/SanderMertens/flecs
         pwd
         echo $(Agent.HomeDirectory)
+        echo $(Agent.BuildDirectory)
+        ls -la
       displayName: Bake Flecs
     - task: CopyFiles@2
       continueOnError: false
@@ -25,18 +27,18 @@ jobs:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 
-- job: buildWindows
-  pool:
-    vmImage: 'windows-latest'
-  steps:
-    - script: echo win build
-    - script: |
-        echo Cloning bake
-        git clone https://github.com/SanderMertens/bake
-        make -C bake/build-Windows
-        bake/bake setup
-      displayName: Clone Bake
-    - script: |
-        echo Baking Flecs
-        bake clone https://github.com/SanderMertens/flecs
-      displayName: Bake Flecs
+# - job: buildWindows
+#   pool:
+#     vmImage: 'windows-latest'
+#   steps:
+#     - script: echo win build
+#     - script: |
+#         echo Cloning bake
+#         git clone https://github.com/SanderMertens/bake
+#         make -C bake/build-Windows
+#         bake/bake setup
+#       displayName: Clone Bake
+#     - script: |
+#         echo Baking Flecs
+#         bake clone https://github.com/SanderMertens/flecs
+#       displayName: Bake Flecs
