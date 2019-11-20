@@ -6,7 +6,7 @@ jobs:
     vmImage: 'macOS-latest'
   steps:
     - script: |
-        echo Cloning bake
+        echo Cloning and Building bake
         git clone https://github.com/SanderMertens/bake
         make -C bake/build-$(uname)
         bake/bake setup
@@ -14,10 +14,13 @@ jobs:
     - script: |
         echo Baking Flecs
         bake clone https://github.com/SanderMertens/flecs
+        echo pwd
+        echo $(Agent.HomeDirectory)
       displayName: Bake Flecs
     - task: CopyFiles@2
+      continueOnError: false
       inputs:
-        sourceFolder: '~/bake/flecs/bin/x64-Darwin-debug'
+        sourceFolder: '$(Agent.HomeDirectory)/bake/flecs/bin/x64-Darwin-debug'
         contents: '**/*.dylib'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
